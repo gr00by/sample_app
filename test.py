@@ -7,6 +7,7 @@ DATABASE = 'db/test.db'
 DEBUG = True
 USERNAME = 'admin'
 PASSWORD = 'default'
+SECRET_KEY = 'secretkey'
 KEY = 'AzlJX8fcBQ58xQaOLHrNXz'
 
 app = Flask(__name__)
