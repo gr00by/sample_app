@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+{% block body %}
+  {% if session.logged_in %}
+  <p>Upload file</p>
+  <script>
+    $( "p" ).click(function() {
+      filepicker.setKey("AzlJX8fcBQ58xQaOLHrNXz");
+
+      filepicker.pick(
+        function(Blob){
+          var filename = document.getElementById('filename');
+          filename.value = Blob.filename;
+          var url = document.getElementById('url');
+          url.value = Blob.url;
+          var mimetype = document.getElementById('mimetype');
+          mimetype.value = Blob.mimetype;
+          var size = document.getElementById('size');
+          size.value = Blob.size;
+          document.getElementById('submit_form').style.display = 'block';
+        }
+      );
+    });
+  </script>
+  <div id="submit_form" style="display: none">
+    <form action="/_add" method="post">
+      Filename: <input type="text" name="filename" id="filename"><br />
+      <input type="hidden" name="url" id="url">
+      <input type="hidden" name="mimetype" id="mimetype">
+      <input type="hidden" name="size" id="size">
+      <input type="submit" value="Submit">
+    </form>
+  </div>
+  {% endif %}
+  <ul class=entries>
+  {% for entry in entries %}
+    <li><h2>{{ entry.filename }}</h2><a href="{{ entry.url }}" target="_blank">{{ entry.url }}</a>
+      <br>Type: {{ entry.mimetype }}
+      <br>Size: {{ entry.size }}
+      {% if session.logged_in %}
+      <br><a href="/_delete?id={{ entry.id }}&url={{ entry.url }}">delete entry</a>
+      {% endif %}
+
+  {% else %}
+    <li><em>No entries</em>
+  {% endfor %}
+  </ul>
+{% endblock %}
